@@ -1,8 +1,8 @@
 # Acme — Technical Test Case
 
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/your-repo)
-[![Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-repo)
-[![Lint](https://img.shields.io/badge/lint-passing-brightgreen)](https://github.com/your-repo)
+[![Tests](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=tests)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=build)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=lint)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
 
 Welcome to Acme — a realtime collaborative post platform built with a modern GraphQL stack.
 
@@ -13,6 +13,7 @@ Acme is a fully-featured platform where users can create and edit posts with liv
 ## Challenge Summary
 
 This codebase was deliberately seeded with bugs across multiple layers:
+
 - Backend domain logic
 - Dependency injection wiring
 - Realtime/RabbitMQ infrastructure
@@ -20,13 +21,14 @@ This codebase was deliberately seeded with bugs across multiple layers:
 
 **Your mission:** Identify and fix all bugs, then document your findings.
 
-##  Solution Report
+## Solution Report
 
 For a comprehensive analysis of all bugs identified and fixes applied, please refer to the detailed correction report:
 
 👉 **[View Complete Correction Report](./docs/RELATORIO-CORRECOES.md)**
 
 The report includes:
+
 - Detailed bug descriptions per layer
 - Root cause analysis
 - Implementation of fixes
