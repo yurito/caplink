@@ -1,40 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, useQuery, useSubscription } from '@apollo/client'
 import {
   CREATE_POST_MUTATION,
-  POST_CREATED_SUBSCRIPTION,
   POST_EDITED_SUBSCRIPTION,
   POSTS_QUERY,
   type Post,
 } from '../graphql/posts'
 
 export function PostsListPage() {
-  const { data, loading, error, updateQuery } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
+  const { data, loading, error, refetch, updateQuery } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
   const [createPost] = useMutation(CREATE_POST_MUTATION)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
-  // New posts don't exist in the cached list yet, so unlike an edit there's no
-  // existing normalized entity for Apollo to merge into automatically — insert
-  // it into the list explicitly (guarding against the creator's own tab seeing
-  // its own post twice).
-  useSubscription<{ postCreated: Post }>(POST_CREATED_SUBSCRIPTION, {
-    onData: ({ data: subData }) => {
-      const post = subData.data?.postCreated
-      if (!post) return
-      updateQuery((prev) => {
-        if (prev.posts.some((existing) => existing.id === post.id)) return prev
-        return { posts: [post, ...prev.posts] }
-      })
-    },
-  })
+  // This page unmounts when I open a post, so any live subscription dies while
+  // I'm away. Refetch on every mount so returning from a post always shows the
+  // posts created in the meantime, without a manual refresh.
+  useEffect(() => {
+    void refetch()
+  }, [refetch])
 
-  // Edits DO normalize automatically (Post has an id), so just mounting this
-  // keeps every list row's title/description live without any manual merge.
+  // Edits normalize automatically (Post has an id), so just mounting this keeps
+  // every list row's title/description live. New posts are handled app-wide in
+  // App (above the router) so they survive navigating off this page.
   useSubscription(POST_EDITED_SUBSCRIPTION)
 
-  if (loading) return <p className="text-sm text-muted-foreground">Loading posts…</p>
+  if (loading && !data) return <p className="text-sm text-muted-foreground">Loading posts…</p>
   if (error)
     return (
       <p className="text-sm text-destructive">
