@@ -1,9 +1,14 @@
 import type { DependencyContainer } from 'tsyringe'
+import { Lifecycle } from 'tsyringe'
 import { CONNECTION_REGISTRY } from './core/ports/IConnectionRegistry.js'
 import { InMemoryConnectionRegistry } from './repositories/InMemoryConnectionRegistry.js'
 
 export function registerConnectionsDomain(container: DependencyContainer): void {
-  container.register(CONNECTION_REGISTRY, { useClass: InMemoryConnectionRegistry })
+  container.register(
+    CONNECTION_REGISTRY,
+    { useClass: InMemoryConnectionRegistry },
+    { lifecycle: Lifecycle.Singleton },
+  )
 }
 
 // No RabbitMQ producers/consumers in v1 — the registry is in-process memory, correct

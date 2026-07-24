@@ -47,17 +47,23 @@ export function PostsListPage() {
     <div className="w-full max-w-2xl space-y-8">
       <form
         className="space-y-3 rounded-md border border-border bg-muted/40 p-4"
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault()
           if (!title.trim() || !description.trim()) return
-          createPost({ variables: { input: { title, description } } })
-          const now = new Date().toISOString()
-          updateQuery((prev) => ({
-            posts: [
-              { id: crypto.randomUUID(), title, description, createdAt: now, updatedAt: now },
-              ...prev.posts,
-            ],
-          }))
+          const { data: created } = await createPost({
+            variables: { input: { title, description } },
+          })
+          const post = created?.createPost as Post | undefined
+          if (post) {
+            // Insert using the REAL id returned by the backend, so the
+            // postCreated subscription's dedup guard recognises it and the
+            // creator never sees the post twice.
+            updateQuery((prev) =>
+              prev.posts.some((existing) => existing.id === post.id)
+                ? prev
+                : { posts: [post, ...prev.posts] },
+            )
+          }
           setTitle('')
           setDescription('')
         }}
