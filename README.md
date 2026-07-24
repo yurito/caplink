@@ -1,10 +1,10 @@
 # Acme — Technical Test Case
 
+Welcome to Acme — a realtime collaborative post platform built with a modern GraphQL stack.
+
 [![Tests](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=tests)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
 [![Build](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=build)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=lint)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
-
-Welcome to Acme — a realtime collaborative post platform built with a modern GraphQL stack.
 
 ## Overview
 
