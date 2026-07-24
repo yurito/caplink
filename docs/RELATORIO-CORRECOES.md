@@ -21,6 +21,9 @@
 
 **Resultado final:** `9/9` testes passando · `lint` limpo · `build` limpo (backend `tsc` + frontend `tsc -b && vite build`).
 
+[![Tests](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=tests)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=build)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/yurito/caplink/tests.yml?branch=main&label=lint)](https://github.com/yurito/caplink/actions/workflows/tests.yml)
 ---
 
 ## Sumário
