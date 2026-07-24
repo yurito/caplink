@@ -1,9 +1,29 @@
 import { NavLink, Route, Routes } from 'react-router-dom'
+import { useApolloClient, useSubscription } from '@apollo/client'
 import { PostsListPage } from './pages/PostsListPage'
 import { PostDetailPage } from './pages/PostDetailPage'
 import { ConnectionsDashboardPage } from './pages/ConnectionsDashboardPage'
+import { POST_CREATED_SUBSCRIPTION, POSTS_QUERY, type Post } from './graphql/posts'
 
 function App() {
+  const client = useApolloClient()
+
+  // Keep the posts list cache live app-wide, above the router, so posts created
+  // by others are captured even while the list page is unmounted (e.g. while
+  // viewing or editing a post). A subscription inside PostsListPage would die on
+  // navigation, so the session would miss every post created while away.
+  useSubscription<{ postCreated: Post }>(POST_CREATED_SUBSCRIPTION, {
+    onData: ({ data }) => {
+      const post = data.data?.postCreated
+      if (!post) return
+      client.cache.updateQuery<{ posts: Post[] }>({ query: POSTS_QUERY }, (prev) =>
+        !prev || prev.posts.some((existing) => existing.id === post.id)
+          ? prev
+          : { posts: [post, ...prev.posts] },
+      )
+    },
+  })
+
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col items-center gap-8 px-6 py-16">
       <header className="w-full max-w-2xl space-y-4 text-center">
